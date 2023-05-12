@@ -1,4 +1,4 @@
-const { DataTypes, connection, commonFields } = require("./dataBase");
+const { DataTypes, connection, commonFields } = require("./dbModel");
 
 const Customer = connection.define(
   "Customer",
