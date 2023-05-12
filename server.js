@@ -1,13 +1,9 @@
 const express = require("express");
 const app = express();
+app.use(express.json());
 
-const Db = require("./api/models/dataBase");
-Db.synchronize();
-console.log("Liste des modèles : ", Db.getModel());
-
-app.get("*", (req, res) => {
-  res.status(200).json("Ok");
-});
+const dbRouter = require('./api/routers/dbRouter');
+app.use(dbRouter);
 
 const PORT = 5000;
 app.listen(PORT, () => {

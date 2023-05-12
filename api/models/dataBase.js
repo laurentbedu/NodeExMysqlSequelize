@@ -45,4 +45,54 @@ Db.synchronize = (option = { alter: true }) => {
   Db.connection.sync(option);
 };
 
+Db.selectAll = async (modelName) => {
+  try {
+    const rows = await Db.getModel(modelName)?.findAll();
+    return { data: rows, result: true, message: "OK" };
+  } catch (err) {
+    return { data: null, result: false, message: err };
+  }
+}
+
+Db.selectOne = async (modelName, id) => {
+  try {
+    const row = await Db.getModel(modelName)?.findByPk(id);
+    return { data: row, result: true, message: "OK" };
+  } catch (err) {
+    return { data: null, result: false, message: err };
+  }
+}
+
+Db.selectWhere = async (modelName, where = null) => {
+  if(!where){
+    where = {"1": 1}
+  }
+  try {
+    const rows = await Db.getModel(modelName)?.findAll({where});
+    return { data: rows, result: true, message: "OK" };
+  } catch (err) {
+    return { data: null, result: false, message: err };
+  }
+}
+
+Db.insertOrUpdate = async (modelName, json) => {
+  if(!Array.isArray(json)){
+    json = [json];
+  }
+  const fields = Object.keys(Db.getModel(modelName).rawAttributes);
+  const rows = await Db.getModel(modelName)?.bulkCreate(
+    json,
+    {
+      updateOnDuplicate: fields,
+      individualHooks: true
+    }
+  );
+  return { data: rows, result: true, message: "OK" };
+}
+
+Db.deleteOne = async (modelName, id) => {//soft delete
+  const exists =  await Db.getModel(modelName)?.destroy({where:{id}});
+  return { data: exists, result: true, message: "OK" };;
+}
+
 module.exports = { ...Db, DataTypes };

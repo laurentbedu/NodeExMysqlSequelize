@@ -7,6 +7,7 @@ const Role = connection.define(
     label: {
       type: DataTypes.STRING,
       allowNull: false,
+      defaultValue: ""
     }
   },
   {
