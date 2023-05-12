@@ -37,12 +37,33 @@ dbModel.getModel = (modelName = null) => {
   return dbModel.models;
 };
 
+const defineRelations = () =>  {
+  const Account = dbModel.getModel("Account"); 
+  const Customer = dbModel.getModel("Customer");
+  const Role = dbModel.getModel("Role");
+  //OneToOne
+  Account.belongsTo(Customer,{
+    foreignKey: {
+      allowNull: false
+    }
+  });
+  Customer.hasOne(Account);
+  //OneToMany
+  Account.belongsTo(Role,{
+    foreignKey: {
+      allowNull: false
+    }
+  });
+  Role.hasMany(Account);
+}
+
 dbModel.synchronize = (option = { alter: true }) => {
   if (!dbModel.models) {
     require(".");
     dbModel.models = dbModel.connection.models;
   }
+  defineRelations();
   dbModel.connection.sync(option);
-};
+}; 
 
 module.exports = { ...dbModel, DataTypes };

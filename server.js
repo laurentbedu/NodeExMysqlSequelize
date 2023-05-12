@@ -2,6 +2,9 @@ const express = require("express");
 const app = express();
 app.use(express.json());
 
+const dbModel = require('./api/models/dbModel');
+dbModel.synchronize(); 
+
 const dbRouter = require('./api/routers/dbRouter');
 app.use(dbRouter);
 

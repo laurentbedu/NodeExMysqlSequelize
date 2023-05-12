@@ -19,12 +19,12 @@ dbService.selectOne = async (modelName, id) => {
   }
 };
 
-dbService.selectWhere = async (modelName, where = null) => {
-  if (!where) {
-    where = { 1: 1 };
-  }
+dbService.selectWhere = async (modelName, options = null) => {
+//   if (!where) {
+//     where = { 1: 1 };
+//   }
   try {
-    const rows = await dbModel.getModel(modelName)?.findAll({ where });
+    const rows = await dbModel.getModel(modelName)?.findAll(options);
     return { data: rows, result: true, message: "OK" };
   } catch (err) {
     return { data: null, result: false, message: err };
