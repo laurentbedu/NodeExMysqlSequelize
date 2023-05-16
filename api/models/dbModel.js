@@ -41,6 +41,8 @@ const defineRelations = () =>  {
   const Account = dbModel.getModel("Account"); 
   const Customer = dbModel.getModel("Customer");
   const Role = dbModel.getModel("Role");
+  const Article = dbModel.getModel("Article");
+  const Tag = dbModel.getModel("Tag");
   //OneToOne
   Account.belongsTo(Customer,{
     foreignKey: {
@@ -55,6 +57,10 @@ const defineRelations = () =>  {
     }
   });
   Role.hasMany(Account);
+  //ManyToMany
+  Tag.belongsToMany(Article, {through: 'ArticleTag'});
+  Article.belongsToMany(Tag, {through: 'ArticleTag'});
+
 }
 
 dbModel.synchronize = (option = { alter: true }) => {

@@ -34,7 +34,7 @@ dbRouter.get("/:table", async (req, res) => {
     const options = req.body;
     const resp = await dbService.selectWhere(modelName, options);
     res.status(resp?.result ? 200 : 400).json(resp)
-  })
+  });
   
   dbRouter.put("/:table", async (req, res) => {
     const { table } = req.params;
